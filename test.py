@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-chromeDriver = '/Users/kakao/IdeaProjects/shopping-spec/selenium-driver/chromedriver/mac64/chromedriver'
+chromeDriver = '/Users/kakao/IdeaProjects/shopping-spec/selenium-driver/chromedriver80/mac64/chromedriver80'
 driver = webdriver.Chrome(chromeDriver)
 timeout = 10
 
