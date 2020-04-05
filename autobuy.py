@@ -1,5 +1,6 @@
 import time
 import sys
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -26,22 +27,32 @@ driver.find_element_by_class_name('_loginSubmitButton').click()
 first_page_present = EC.presence_of_element_located((By.ID, 'bottomMenu'))
 WebDriverWait(driver, timeout).until(first_page_present)
 time.sleep(3)
-print(not driver.find_element_by_class_name('gobuy').is_displayed())
 
-while not driver.find_element_by_class_name('gobuy').is_displayed():
-    time.sleep(6)
+count = 0
+compare_price = 400000
+target_price = 300000
+while target_price > compare_price or not driver.find_element_by_class_name('gobuy').is_displayed():
     driver.refresh()
     while_page_present = EC.presence_of_element_located((By.ID, 'bottomMenu'))
     WebDriverWait(driver, timeout).until(while_page_present)
     time.sleep(4)
-    print(not driver.find_element_by_class_name('gobuy').is_displayed())
+    # sleep & 화면로딩 후 진행
+    price_str = driver.find_element_by_css_selector('#product-info > .price > .sales').text
+    if price_str is not None:
+        price = price_str.replace(",", "").replace("원", "")
+        print(str(count) + '. 가격 ' + price + '원 : ' + str(datetime.now()))
+        target_price = int(price)
+    else:
+        print(str(count) + '. (가격 못구함) : ' + str(datetime.now()))
+    count += 1
 
 # 구매하기 버튼 노출됨
+print('**** 구매 버튼 활성화 진행 ****')
 driver.find_element_by_class_name('close-banner').click()
 driver.find_element_by_class_name('gobuy').click()
+driver.implicitly_wait(timeout)
 
 # 주문서 진입
-driver.implicitly_wait(timeout)
 second_page_present = EC.presence_of_element_located((By.ID, 'agreement-of-card-agreements'))
 WebDriverWait(driver, timeout).until(second_page_present)
 
