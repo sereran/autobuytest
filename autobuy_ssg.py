@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 # 크롬 실행
+# chromeDriver = '/Users/kakao/IdeaProjects/shopping-spec/selenium-driver/chromedriver/mac64/chromedriver'
 chromeDriver = '/Users/dooboo/IdeaProjects/sereran/autobuy/venv/chromedriver80'
 driver = webdriver.Chrome(chromeDriver)
 timeout = 10
