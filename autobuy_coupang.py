@@ -34,20 +34,34 @@ time.sleep(3)
 count = 0
 compare_price = 400000
 target_price = 300000
-while target_price > compare_price or not driver.find_element_by_class_name('gobuy').is_displayed():
-    driver.refresh()
-    while_page_present = EC.presence_of_element_located((By.ID, 'bottomMenu'))
-    WebDriverWait(driver, timeout).until(while_page_present)
-    time.sleep(4)
-    # sleep & 화면로딩 후 진행
-    price_str = driver.find_element_by_css_selector('#product-info > .price > .sales').text
-    if price_str is not None:
-        price = price_str.replace(",", "").replace("원", "")
-        print(str(count) + '. 가격 ' + price + '원 : ' + str(datetime.now()))
-        target_price = int(price)
-    else:
-        print(str(count) + '. (가격 못구함) : ' + str(datetime.now()))
-    count += 1
+isEnable = False
+try:
+    isEnable = driver.find_element_by_class_name('gobuy').is_displayed()
+except Exception:
+    isEnable = False
+
+
+while target_price > compare_price or not isEnable:
+    try:
+        time.sleep(1)
+        driver.refresh()
+        driver.implicitly_wait(timeout)
+        while_page_present = EC.presence_of_element_located((By.ID, 'bottomMenu'))
+        WebDriverWait(driver, timeout).until(while_page_present)
+        # sleep & 화면로딩 후 진행
+        price_str = driver.find_element_by_css_selector('#product-info > .price > .sales').text
+        if price_str is not None:
+            price = price_str.replace(",", "").replace("원", "")
+            print(str(count) + '. 가격 ' + price + '원 : ' + str(datetime.now()))
+            target_price = int(price)
+        else:
+            print(str(count) + '. (가격 못구함) : ' + str(datetime.now()))
+        count += 1
+        isEnable = driver.find_element_by_class_name('gobuy').is_displayed()
+    except Exception:
+        print('ㅇㅔ러 발생')
+        isEnable = False
+
 
 # 구매하기 버튼 노출됨
 print('**** 구매 버튼 활성화 진행 ****')
