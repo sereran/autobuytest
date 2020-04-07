@@ -8,10 +8,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 # 크롬 실행
-# chromeDriver = '/Users/kakao/IdeaProjects/shopping-spec/selenium-driver/chromedriver/mac64/chromedriver'
-chromeDriver = '/Users/dooboo/IdeaProjects/sereran/autobuy/venv/chromedriver80'
+chromeDriver = '/Users/kakao/IdeaProjects/shopping-spec/selenium-driver/chromedriver/mac64/chromedriver'
+# chromeDriver = '/Users/dooboo/IdeaProjects/sereran/autobuy/venv/chromedriver80'
 driver = webdriver.Chrome(chromeDriver)
-timeout = 10
+timeout = 4
 
 # 테스트
 firstOptionIndex = '58'
@@ -36,21 +36,30 @@ driver.find_element_by_css_selector('.layer_time_box > ._closeAllTimeAlert').cli
 
 # 첫 번째 페이지 로딩 - '구매하기' 버튼 노출 떄까지 기다림
 driver.implicitly_wait(timeout)
-first_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
-WebDriverWait(driver, timeout).until(first_page_present)
+
+isEnable = False
+try:
+    first_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
+    WebDriverWait(driver, timeout).until(first_page_present)
+    driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit').click()
+    isEnable = driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > .purchase_selector > li > button[data-index="128"]').is_enabled()
+except Exception:
+    isEnable = False
 
 count = 0
-compare_price = 400000
-target_price = 300000
 # 동숲
 # firstOptionIndex = '128' #동숲
 # firstOptionIndex = '58' # 테스
-driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit').click()
-while not driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > .purchase_selector > li > button[data-index="128"]').is_enabled():
+while not isEnable:
     driver.refresh()
-    while_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
-    WebDriverWait(driver, timeout).until(while_page_present)
-    driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit').click()
+    try:
+        while_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
+        WebDriverWait(driver, timeout).until(while_page_present)
+        driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit').click()
+        isEnable = driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > .purchase_selector > li > button[data-index="128"]').is_enabled()
+    except Exception:
+        isEnable = False
+
     # sleep & 화면로딩 후 진행
     print(str(count) + '. ' + str(datetime.now()))
     count += 1
