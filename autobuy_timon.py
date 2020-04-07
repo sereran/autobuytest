@@ -37,6 +37,14 @@ driver.find_element_by_css_selector('.layer_time_box > ._closeAllTimeAlert').cli
 # 첫 번째 페이지 로딩 - '구매하기' 버튼 노출 떄까지 기다림
 driver.implicitly_wait(timeout)
 
+try:
+    while driver.find_element_by_id('view-error') is not None:
+        driver.refresh()
+        driver.implicitly_wait(timeout)
+        print('에러페이지')
+except Exception:
+    print('통과')
+
 isEnable = False
 try:
     first_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
