@@ -61,6 +61,10 @@ count = 0
 while not isEnable:
     driver.refresh()
     try:
+        while driver.find_element_by_id('view-error') is not None:
+            driver.refresh()
+            driver.implicitly_wait(timeout)
+            print('에러페이지')
         while_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
         WebDriverWait(driver, timeout).until(while_page_present)
         driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit').click()
