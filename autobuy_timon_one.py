@@ -13,8 +13,12 @@ chromeDriver = '/Users/kakao/IdeaProjects/shopping-spec/selenium-driver/chromedr
 driver = webdriver.Chrome(chromeDriver)
 timeout = 4
 
+# 테스트
+# dealUrl = '3355181654'
+# 동숲
+dealUrl = '3238163078'
+
 # 로그인 페이지 접근
-dealUrl = '810158162'
 login_url = 'https://login.tmon.co.kr/user/loginform?return_url=http%3A%2F%2Ftmon.co.kr%2Fdeal%2F' + dealUrl
 driver.get(login_url)
 driver.implicitly_wait(timeout)
@@ -40,10 +44,9 @@ except Exception:
 
 isEnable = False
 try:
-    first_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
+    first_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-role="prchWrap"]'))
     WebDriverWait(driver, timeout).until(first_page_present)
-    driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit').click()
-    isEnable = driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > .purchase_selector > li > button[data-index="128"]').is_enabled()
+    isEnable = driver.find_element_by_css_selector('.deal_topinfo button[data-type="buyNow"]').is_displayed()
 except Exception:
     isEnable = False
 
@@ -58,10 +61,9 @@ while not isEnable:
             driver.refresh()
             driver.implicitly_wait(timeout)
             print('에러페이지')
-        while_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
-        WebDriverWait(driver, timeout).until(while_page_present)
-        driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit').click()
-        isEnable = driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > .purchase_selector > li > button[data-index="128"]').is_enabled()
+        first_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-role="prchWrap"]'))
+        WebDriverWait(driver, timeout).until(first_page_present)
+        isEnable = driver.find_element_by_css_selector('.deal_topinfo button[data-type="buyNow"]').is_displayed()
     except Exception:
         isEnable = False
 
@@ -75,9 +77,7 @@ print('**** 구매 버튼 활성화 진행 ****')
 # secondOptionDealNo = '3312057882'
 # firstOptionIndex = '58' # 테스트
 # secondOptionDealNo = '2269941786'
-driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap0"] > .purchase_selector > li > button[data-index="128"]').click()
-driver.find_element_by_css_selector('.deal_topinfo div[data-name="prchDepSelWrap1"] > .purchase_selector > li[data-optionno="3312057882"] > button[data-dealno="3312057882"]').click()
-driver.find_element_by_css_selector('.deal_topinfo > .hasItem .purchase_list_box button[data-type="buyNow"]').click()
+isEnable = driver.find_element_by_css_selector('.deal_topinfo button[data-type="buyNow"]').click()
 driver.implicitly_wait(timeout)
 
 # 주문서 진입
