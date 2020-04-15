@@ -34,6 +34,7 @@ try:
     while driver.find_element_by_id('view-error').is_displayed():
         driver.refresh()
         driver.implicitly_wait(timeout)
+        time.sleep(1)
         print('에러페이지')
 except Exception:
     print('통과')
@@ -57,6 +58,7 @@ while not isEnable:
         while driver.find_element_by_id('view-error').is_displayed():
             driver.refresh()
             driver.implicitly_wait(timeout)
+            time.sleep(1)
             print('에러페이지')
         while_page_present = EC.presence_of_element_located((By.CSS_SELECTOR, '.deal_topinfo div[data-name="prchDepSelWrap0"] > button.tit'))
         WebDriverWait(driver, timeout).until(while_page_present)
