@@ -18,12 +18,12 @@ timeout = 10
 # 테스트
 # itemId = '1000036549208'
 # 라이트 코럴
-itemId = '1000043513942'
+itemId = '1000043512191'
 # 동숲
 # itemId = '1000042290732'
 
-emart_login_url = 'https://member.ssg.com/member/login.ssg?retURL=http%3A%2F%2Femart.ssg.com%2Fitem%2FitemView.ssg%3FitemId%3D' + itemId
-driver.get(emart_login_url)
+ssh_login_url = 'https://member.ssg.com/member/login.ssg?retURL=http%3A%2F%2Fshinsegaemall.ssg.com%2Fitem%2FitemView.ssg%3FitemId%3D' + itemId
+driver.get(ssh_login_url)
 driver.implicitly_wait(timeout)
 
 # 로그인
