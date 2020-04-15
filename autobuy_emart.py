@@ -68,7 +68,9 @@ driver.find_element_by_id('actionPayment').click()
 # driver.implicitly_wait(timeout)
 
 # 주문서 진입
-time.sleep(5)
+driver.implicitly_wait(timeout)
+agree_present = EC.presence_of_element_located((By.ID, 'chkPayAgreeAll1'))
+WebDriverWait(driver, timeout).until(agree_present)
 
 # 결제 진행
 driver.find_element_by_id('rfdMthdCd_10').click()  # 품절시 환불 방법
